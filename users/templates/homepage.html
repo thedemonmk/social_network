@@ -1,0 +1,63 @@
+<!-- api/templates/api/homepage.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Social Networking API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #e0e0e0;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .api-root-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Social Networking API</h1>
+        <p>Below are the available API endpoints:</p>
+        <ul>
+            {% for endpoint, url in api_endpoints.items %}
+                <li><strong>{{ endpoint }}:</strong> <a href="{{ url }}">{{ url }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

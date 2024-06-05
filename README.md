@@ -55,13 +55,13 @@ This project is a social networking API built with Django Rest Framework. It pro
 
 ## API Endpoints
 
-- `POST /signup/` - User signup
-- `POST /login/` - User login
-- `GET /users/` - Search users by email or name (authenticated)
-- `POST /friend-request/<user_id>/` - Send friend request (authenticated)
-- `PUT /friend-request/<request_id>/action/` - Accept or reject friend request (authenticated)
-- `GET /friends/` - List friends (authenticated)
-- `GET /friend-requests/` - List pending friend requests (authenticated)
+- `POST /api/v1/signup/` - User signup
+- `POST /api/v1/login/` - User login
+- `GET /api/v1/users/` - Search users by email or name (authenticated)
+- `POST /api/v1/friend-request/<user_id>/` - Send friend request (authenticated)
+- `PUT /api/v1/friend-request/<request_id>/action/` - Accept or reject friend request (authenticated)
+- `GET /api/v1/friends/` - List friends (authenticated)
+- `GET /api/v1/friend-requests/` - List pending friend requests (authenticated)
 
 ## Notes
 
