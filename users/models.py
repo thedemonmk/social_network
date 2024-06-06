@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 class SocialUser(models.Model):
     email = models.EmailField(unique=True)
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, null=True, blank=True, default=None)
+    last_name = models.CharField(max_length=100, null=True, blank=True, default=None)
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
 

@@ -72,7 +72,9 @@ This project is a social networking API built with Django Rest Framework. It pro
 ## Notes
 
 - The friend request rate limit is set to 3 requests per minute.
-- You need to add sufficient data in database for pagination testing
+- You need to add sufficient data in database for pagination testing.
+- Postman collection is also added in the root folder of the repository for primary testing.
+- Also adding basic SQLite file for providing basic data to test APIs.
 
 ## License
 
