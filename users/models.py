@@ -1,8 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class SocialUser(models.Model):
     email = models.EmailField(unique=True)
-    user = models.ForeignKey('auth.User', related_name='profile', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     created_on = models.DateTimeField(auto_now_add=True)

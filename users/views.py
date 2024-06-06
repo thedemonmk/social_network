@@ -8,10 +8,14 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.urls import reverse
+from rest_framework.permissions import AllowAny
+from .throttling import FriendRequestThrottle
 
 class SignupView(generics.CreateAPIView):
     queryset = SocialUser.objects.all()
     serializer_class = UserSerializer
+    authentication_classes = []
+    permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
@@ -23,6 +27,9 @@ class SignupView(generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class LoginView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
     def post(self, request):
         email = request.data.get('email').lower()
         password = request.data.get('password')
@@ -35,7 +42,7 @@ class UserSearchView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        query = request.GET.get('q', '')
+        query = request.GET.get('q', '').lower()
         users = SocialUser.objects.filter(Q(email__iexact=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query))
         paginator = Paginator(users, 10)
         page_number = request.GET.get('page', 1)
@@ -46,9 +53,14 @@ class UserSearchView(APIView):
 class FriendRequestView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_throttles(self):
+        if self.request.method == 'POST':
+            return [FriendRequestThrottle()]
+        return []
+    
     def post(self, request, user_id):
         to_user = SocialUser.objects.get(id=user_id)
-        friend_request, created = FriendRequest.objects.get_or_create(from_user=request.user, to_user=to_user)
+        friend_request, created = FriendRequest.objects.get_or_create(from_user=request.user.profile, to_user=to_user)
         if not created:
             return Response({"message": "Friend request already sent."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(FriendRequestSerializer(friend_request).data, status=status.HTTP_201_CREATED)
@@ -67,8 +79,8 @@ class FriendListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        friends = SocialUser.objects.filter(Q(sent_requests__to_user=request.user, sent_requests__status='accepted') |
-                                      Q(received_requests__from_user=request.user, received_requests__status='accepted'))
+        friends = SocialUser.objects.filter(Q(sent_requests__to_user=request.user.profile, sent_requests__status='accepted') |
+                                      Q(received_requests__from_user=request.user.profile, received_requests__status='accepted'))
         serializer = UserSerializer(friends, many=True)
         return Response(serializer.data)
 
@@ -76,7 +88,7 @@ class PendingFriendRequestsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        pending_requests = FriendRequest.objects.filter(to_user=request.user, status='pending')
+        pending_requests = FriendRequest.objects.filter(from_user=request.user.profile, status='pending')
         serializer = FriendRequestSerializer(pending_requests, many=True)
         return Response(serializer.data)
 
