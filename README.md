@@ -44,10 +44,16 @@ This project is a social networking API built with Django Rest Framework. It pro
     ```
 
 6. **Run the development server**
+    1. **Using default django serving utility**
+        ```bash
+        python manage.py runserver
+        ```
+        **OR**
 
-    ```bash
-    python manage.py runserver
-    ```
+    2. **Using docker**
+        ```bash
+        docker-compose up --build
+        ```
 
 7. **Access the API**
 
