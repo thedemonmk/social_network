@@ -72,6 +72,7 @@ This project is a social networking API built with Django Rest Framework. It pro
 ## Notes
 
 - The friend request rate limit is set to 3 requests per minute.
+- You need to add sufficient data in database for pagination testing
 
 ## License
 
